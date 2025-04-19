@@ -1,13 +1,13 @@
 package com.gavolpp.SmartFridgeAI.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+@Setter
+@Getter
 @Entity
 @Table(name = "food_item")
 @NoArgsConstructor
@@ -19,14 +19,6 @@ public class FoodItem {
     private String nome;
     private enum categoria{vegetais, carne, laticineos, frutas};
     private Integer quantidade;
-    private LocalDateTime validade;
+    private LocalDate validade;
 
-    public long getId() {return id;}
-    public void setId(long id) {this.id = id;}
-    public String getNome() {return nome;}
-    public void setNome(String nome) {this.nome = nome;}
-    public Integer getQuantidade() {return quantidade;}
-    public void setQuantidade(Integer quantidade) {this.quantidade = quantidade;}
-    public LocalDateTime getValidade() {return validade;}
-    public void setValidade(LocalDateTime validade) {this.validade = validade;}
 }

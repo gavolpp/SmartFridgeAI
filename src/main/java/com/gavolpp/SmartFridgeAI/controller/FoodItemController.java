@@ -17,26 +17,30 @@ public class FoodItemController {
     public FoodItemController(FoodItemService foodItemService) {
         this.foodItemService = foodItemService;
     }
-    @PostMapping
-    public ResponseEntity<FoodItem> create(@RequestBody FoodItem fooditem){
-        FoodItem saved = foodItemService.insert(fooditem);
-        return ResponseEntity.ok(saved);
+    @PostMapping("/create")
+    public void create(@RequestBody FoodItem fooditem){
+        foodItemService.insert(fooditem);
     }
-    @GetMapping
+    @GetMapping("/listAll")
     public ResponseEntity<List<FoodItem>> listAll(){
         List<FoodItem> foodList = foodItemService.list();
         return ResponseEntity.ok(foodList);
     }
-    @PutMapping("/{id}")
+    @GetMapping("/findId/{id}")
+    public ResponseEntity<Optional<FoodItem>> findId(@PathVariable long id){
+        Optional<FoodItem> foodItem = foodItemService.findId(id);
+        return ResponseEntity.ok(foodItem);
+    }
+    @PutMapping("/update/{id}")
     public Optional<ResponseEntity<FoodItem>> update(@RequestBody FoodItem foodItem, @PathVariable Long id){
-        return Optional.of((foodItemService.listById(id)
+        return Optional.of((foodItemService.findId(id)
                 .map(itemExistente -> {
                     foodItem.setId(itemExistente.getId());
                     FoodItem atualizado = foodItemService.update(foodItem);
                     return ResponseEntity.ok(atualizado);
                 }).orElse(ResponseEntity.notFound().build())));
     }
-    @DeleteMapping
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> excluir(@PathVariable long id){
         foodItemService.delete(id);
         return ResponseEntity.noContent().build();
